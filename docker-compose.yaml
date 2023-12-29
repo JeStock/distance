@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  distance:
+    build: ./Distance
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PRJ=Api
+    ports:
+      - 5788:80
+    depends_on:
+      - cache
+
+  places:
+    build: ./Places
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PRJ=Api
+    ports:
+      - 5789:80
+
+  cache:
+    image: redis:latest
+    ports:
+      - "6379:6379"
