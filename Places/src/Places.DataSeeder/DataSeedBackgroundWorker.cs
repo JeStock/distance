@@ -34,7 +34,7 @@ public class DataSeedBackgroundWorker : IHostedService, IDisposable
         await foreach (var record in records)
         {
             list.Add(record);
-            // TODO [sg]: add model processing and mapping
+            // TODO [sg]: add model processing, validation and mapping
             //await client.IndexAsync(record, token);
         }
 

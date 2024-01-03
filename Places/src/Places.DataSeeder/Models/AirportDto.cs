@@ -3,7 +3,7 @@
 public class AirportDto
 {
     public int Id { get; init; }
-    public string? Icao { get; init; }
+    public string? IcaoCode { get; init; }
     public AirportType Type { get; init; }
     public string? Name { get; init; }
     public double? Latitude { get; init; }

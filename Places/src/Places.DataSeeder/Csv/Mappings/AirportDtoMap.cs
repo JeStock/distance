@@ -8,7 +8,7 @@ public sealed class AirportDtoMap : ClassMap<AirportDto>
     public AirportDtoMap()
     {
         Map(m => m.Id).Name("id");
-        Map(m => m.Icao).Name("ident");
+        Map(m => m.IcaoCode).Name("ident");
         Map(m => m.Type).Name("type")
             .TypeConverter<AirportTypeConverter<AirportType>>();
         Map(m => m.Name).Name("name");
