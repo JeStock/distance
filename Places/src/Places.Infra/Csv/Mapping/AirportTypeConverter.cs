@@ -1,15 +1,16 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using static Places.DataSeeder.Models.AirportType;
+using Places.Infra.Csv.Models;
+using static Places.Infra.Csv.Models.AirportType;
 
-namespace Places.DataSeeder.Csv.Mappings;
+namespace Places.Infra.Csv.Mapping;
 
 public class AirportTypeConverter<T>() : EnumConverter(typeof(T))
     where T : struct, Enum
 {
-    public override object ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData)
-        => text switch
+    public override object? ConvertFromString(string? text, IReaderRow row, MemberMapData memberMapData) =>
+        text switch
         {
             "closed" => Closed,
             "heliport" => Heliport,
@@ -18,6 +19,6 @@ public class AirportTypeConverter<T>() : EnumConverter(typeof(T))
             "small_airport" => SmallAirport,
             "medium_airport" => MediumAirport,
             "large_airport" => LargeAirport,
-            _ => Unknown
+            _ => (AirportType?)default
         };
 }

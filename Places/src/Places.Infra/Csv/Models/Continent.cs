@@ -1,8 +1,7 @@
-namespace Places.DataSeeder.Models;
+namespace Places.Infra.Csv.Models;
 
 public enum Continent
 {
-    Unknown = 0,
     Africa = 1,
     Antarctica = 2,
     Asia = 3,

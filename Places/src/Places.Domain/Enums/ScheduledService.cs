@@ -1,8 +1,7 @@
-namespace Places.DataSeeder.Models;
+namespace Places.Domain.Enums;
 
 public enum ScheduledService
 {
-    Unknown = 0,
     Yes = 1,
     No = 2
 }

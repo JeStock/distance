@@ -1,54 +1,39 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Places.DataSeeder.Csv;
-using Places.DataSeeder.Models;
-using Places.Infra.Factories;
+using Places.Infra;
+using Places.Infra.Csv;
+using Places.Infra.Elastic;
+using Places.Infra.Elastic.Models;
+using Places.Shared;
 
 namespace Places.DataSeeder;
 
-public class DataSeedBackgroundWorker : IHostedService, IDisposable
+public class DataSeedBackgroundWorker(
+    IAirportsHandler airportsHandler,
+    IAirportIndexFacade airportIndexFacade)
+    : IHostedService, IDisposable
 {
-    private readonly IElasticClientFactory _factory;
-    private readonly IAirportsHandler _airportsHandler;
-
-    public DataSeedBackgroundWorker(IElasticClientFactory factory, IAirportsHandler airportsHandler)
-    {
-        _factory = factory;
-        _airportsHandler = airportsHandler;
-    }
-
     public async Task StartAsync(CancellationToken token)
     {
-        await ProcessCsvAsync(token);
+        var indexCreated = await airportIndexFacade.CreateAirportsIndexAsync(token);
+        if (indexCreated == OperationResult.Failure) // TODO [sg]: add log
+            return;
+
+        var recordBatches = airportsHandler.GetAirportsAsync(token).ProcessBatch(50, token);
+        await foreach (var batch in recordBatches)
+        {
+            var airports = batch.Select(AirportBuilder.Build)
+                .Where(x => x != null)
+                .Select(x => x!);
+
+            // TODO [sg]: add log bach processed
+            await airportIndexFacade.BulkIndexAirportsAsync(airports, token);
+        }
     }
 
-    // TODO [sg]: add logging
     public Task StopAsync(CancellationToken token)
     {
-        return Task.CompletedTask;
+        return airportIndexFacade.DeleteAirportsIndexAsync(token);
     }
 
-    public async Task ProcessCsvAsync(CancellationToken token)
-    {
-        var list = new List<AirportDto>();
-        var records = _airportsHandler.GetAirportsAsync(token);
-        await foreach (var record in records)
-        {
-            list.Add(record);
-            // TODO [sg]: add model processing, validation and mapping
-            //await client.IndexAsync(record, token);
-        }
-
-        var types = list.Select(x => x.Type).Distinct();
-        var continents = list.Select(x => x.Continent).Distinct();
-        var scheduledServices = list.Select(x => x.ScheduledService).Distinct();
-
-        Print("Types", types);
-        Print("Continents", continents);
-        Print("ScheduledServices", scheduledServices);
-    }
-
-    private static void Print<T>(string name, IEnumerable<T?> items)
-        => Console.WriteLine($"{name}: {string.Join(", ", items)}");
-
-    public void Dispose() => _airportsHandler.Dispose();
+    public void Dispose() => airportsHandler.Dispose();
 }

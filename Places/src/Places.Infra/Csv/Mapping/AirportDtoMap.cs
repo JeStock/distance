@@ -1,7 +1,7 @@
 ﻿using CsvHelper.Configuration;
-using Places.DataSeeder.Models;
+using Places.Infra.Csv.Models;
 
-namespace Places.DataSeeder.Csv.Mappings;
+namespace Places.Infra.Csv.Mapping;
 
 public sealed class AirportDtoMap : ClassMap<AirportDto>
 {
@@ -9,14 +9,12 @@ public sealed class AirportDtoMap : ClassMap<AirportDto>
     {
         Map(m => m.Id).Name("id");
         Map(m => m.IcaoCode).Name("ident");
-        Map(m => m.Type).Name("type")
-            .TypeConverter<AirportTypeConverter<AirportType>>();
+        Map(m => m.Type).Name("type").TypeConverter<AirportTypeConverter<AirportType>>();
         Map(m => m.Name).Name("name");
-        Map(m => m.Latitude).Name("latitude_deg");
         Map(m => m.Longitude).Name("longitude_deg");
+        Map(m => m.Latitude).Name("latitude_deg");
         Map(m => m.Elevation).Name("elevation_ft");
-        Map(m => m.Continent).Name("continent")
-            .TypeConverter<ContinentsConverter<Continent>>();
+        Map(m => m.Continent).Name("continent").TypeConverter<ContinentsConverter<Continent>>();
         Map(m => m.IsoCountry).Name("iso_country");
         Map(m => m.IsoRegion).Name("iso_region");
         Map(m => m.Municipality).Name("municipality");

@@ -13,5 +13,6 @@
 5. Add unit tests
 6. (Optional) add integration tests
 7. (Optional) add PureDI
-8. (Optional) add logging
-9. (Optional) add health checks
+8. (Optional) add logging + Serilog + ELK
+9. (Optional) add health checks + ELK
+10. Use Elasticsearch Geospatial data for Lat/Lon.

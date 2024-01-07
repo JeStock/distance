@@ -1,8 +1,7 @@
-namespace Places.DataSeeder.Models;
+namespace Places.Infra.Csv.Models;
 
 public enum AirportType
 {
-    Unknown = 0,
     Closed = 1,
     Heliport = 2,
     SeaplaneBase = 3,

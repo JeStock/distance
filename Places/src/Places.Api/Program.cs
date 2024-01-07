@@ -1,6 +1,8 @@
-﻿using Places.DataSeeder;
+﻿using Places.Api;
+using Places.Api.Configuration;
+using Places.DataSeeder;
 using Places.Infra;
-using Places.Infra.Factories;
+using Places.Infra.Elastic.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +10,16 @@ builder.Services
     .AddInfraModule(builder.Configuration)
     .AddDataSeederModule(builder.Configuration);
 
+builder.Services.AddControllers(options => options.AddRoutesConventions());
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapGet("/{iata}", async (string iata, IElasticClientFactory elasticFactory) =>
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Places.DataSeeder.Csv;
+using Places.Infra.Csv;
 
 namespace Places.DataSeeder;
 
