@@ -1,8 +1,8 @@
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
-using Places.Infra.Csv.Models;
-using static Places.Infra.Csv.Models.ScheduledService;
+using Places.Core.Contracts.Models;
+using static Places.Core.Contracts.Models.ScheduledService;
 
 namespace Places.Infra.Csv.Mapping;
 

@@ -1,6 +1,7 @@
 ﻿using Elastic.Transport;
 using Microsoft.AspNetCore.Mvc;
-using Places.Infra.Elastic.Factories;
+using Places.Infra.Elastic;
+using HttpMethod = Elastic.Transport.HttpMethod;
 
 namespace Places.Api.Controllers;
 
@@ -16,7 +17,13 @@ public class PlacesController : ControllerBase
         this.elasticFactory = elasticFactory;
     }
 
-    [HttpGet("/{iata}")]
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok("Hello Places!");
+    }
+
+    [HttpGet("{iata}")]
     [ProducesResponseType<string>(StatusCodes.Status200OK)]
     [ProducesResponseType<NotFoundResult>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest)]
@@ -37,5 +44,25 @@ public class PlacesController : ControllerBase
             Console.WriteLine("Indexed TestMessage retrieved successfully!");
 
         return Ok($"Places responded '{iata}'");
+    }
+    
+    private async Task TestElasticRestApi(CancellationToken token)
+    {
+        var elastic = elasticFactory.GetClient();
+        var body = """
+                   {
+                     "mappings": {
+                       "properties": {
+                         "age":    { "type": "integer" },
+                         "email":  { "type": "keyword"  },
+                         "name":   { "type": "text"  }
+                       }
+                     }
+                   }
+                   """;
+        var resp = await elastic.Transport
+            .RequestAsync<StringResponse>(HttpMethod.PUT, "/test-elastic-rest-api", PostData.String(body), token);
+
+        var resp1 = resp.Body;
     }
 }

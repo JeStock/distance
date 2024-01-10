@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		.gitignore = .gitignore
 		README.md = README.md
 		Places.sln.DotSettings = Places.sln.DotSettings
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Infra", "src\Places.Infra\Places.Infra.csproj", "{851D2B29-2356-49D5-9BF0-9447C0DE8EFD}"
@@ -22,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Shared", "src\Places
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.DataSeeder", "src\Places.DataSeeder\Places.DataSeeder.csproj", "{272960FD-34D6-4B62-8076-BE77E9056D17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Domain", "src\Places.Domain\Places.Domain.csproj", "{2C869A46-D522-4707-B7EF-DA63609BC3F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Core", "src\Places.Core\Places.Core.csproj", "{2C869A46-D522-4707-B7EF-DA63609BC3F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Application", "src\Places.Application\Places.Application.csproj", "{FD6B3EE8-2101-4CFB-9EE9-42BE8B3D5E2C}"
 EndProject

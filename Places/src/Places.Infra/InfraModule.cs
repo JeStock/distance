@@ -1,13 +1,10 @@
-﻿using System.Collections.Frozen;
-using Elastic.Clients.Elasticsearch;
+﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Transport;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Places.Domain;
-using Places.Domain.Enums;
+using Places.Core.Contracts.Elastic;
 using Places.Infra.Configuration;
 using Places.Infra.Elastic;
-using Places.Infra.Elastic.Factories;
 using Places.Shared;
 
 namespace Places.Infra;
@@ -31,12 +28,12 @@ public static class InfraModule
             )
         );
 
-        services.AddSingleton<FrozenDictionary<int, Continent>>(_ =>
-            EnumMapConverter.Enumerate<Continent>());
+        /*services.AddSingleton<FrozenDictionary<int, Continent>>(_ =>
+            EnumMapConverter.Enumerate<Continent>());*/
 
         services.AddSingleton(new ElasticsearchClient(elasticConnectionSettings));
         services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
-        services.AddSingleton<IAirportIndexFacade, AirportIndexFacade>();
+        services.AddSingleton<IAirportsIndexFacade, AirportsIndexFacade>();
 
         return services;
     }

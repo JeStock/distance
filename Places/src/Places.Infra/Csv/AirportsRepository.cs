@@ -1,13 +1,14 @@
 ﻿using System.Globalization;
 using System.Reflection;
 using CsvHelper;
+using Places.Core.Contracts.Csv;
+using Places.Core.Contracts.Models;
 using Places.Infra.Csv.Mapping;
-using Places.Infra.Csv.Models;
 
 namespace Places.Infra.Csv;
 
 // TODO [sg]: comment on Dispose Pattern
-public sealed class AirportsHandler : IAirportsHandler
+public class AirportsRepository : IAirportsRepository
 {
     private StreamReader? streamReader;
     private CsvReader? csvReader;
@@ -44,5 +45,5 @@ public sealed class AirportsHandler : IAirportsHandler
         GC.SuppressFinalize(this);
     }
 
-    ~AirportsHandler() => Dispose(false);
+    ~AirportsRepository() => Dispose(false);
 }

@@ -1,4 +1,4 @@
-﻿namespace Places.Infra.Elastic.Models;
+﻿namespace Places.Core.Domain;
 
 /// <summary>
 /// Represents the result of an operation on elastic index.

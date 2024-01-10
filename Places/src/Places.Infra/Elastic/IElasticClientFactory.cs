@@ -1,6 +1,6 @@
 ﻿using Elastic.Clients.Elasticsearch;
 
-namespace Places.Infra.Elastic.Factories;
+namespace Places.Infra.Elastic;
 
 public interface IElasticClientFactory
 {

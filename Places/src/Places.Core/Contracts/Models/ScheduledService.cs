@@ -1,4 +1,4 @@
-namespace Places.Domain.Enums;
+namespace Places.Core.Contracts.Models;
 
 public enum ScheduledService
 {

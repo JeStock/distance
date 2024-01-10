@@ -1,12 +1,12 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.Core.Bulk;
-using Places.Domain.Models;
-using Places.Infra.Elastic.Factories;
-using Places.Infra.Elastic.Models;
+using Places.Core.Contracts.Elastic;
+using Places.Core.Contracts.Models;
+using Places.Core.Domain;
 
 namespace Places.Infra.Elastic;
 
-public class AirportIndexFacade(IElasticClientFactory factory) : IAirportIndexFacade
+public class AirportsIndexFacade(IElasticClientFactory factory) : IAirportsIndexFacade
 {
     private const string AirportsIndexName = "airports";
     private readonly Indices airportsIndex = Indices.Parse(AirportsIndexName);
@@ -39,9 +39,7 @@ public class AirportIndexFacade(IElasticClientFactory factory) : IAirportIndexFa
         return ToResult(indexDeleted.IsSuccess());
     }
 
-    public ElasticsearchClient GetClient() => factory.GetClient();
-
-    public async Task<OperationResult> IndexAirportAsync(Airport airport, CancellationToken token = default)
+    public async Task<OperationResult> IndexAirportAsync(AirportDto airport, CancellationToken token = default)
     {
         var elastic = factory.GetClient();
 
@@ -50,13 +48,13 @@ public class AirportIndexFacade(IElasticClientFactory factory) : IAirportIndexFa
     }
 
     public async Task<OperationResult> BulkIndexAirportsAsync(
-        IEnumerable<Airport> airports, CancellationToken token = default)
+        IEnumerable<AirportDto> airports, CancellationToken token = default)
     {
         var elastic = factory.GetClient();
         var bulkRequest = new BulkRequest(AirportsIndexName);
 
         var indexOps = airports
-            .Select(airport => new BulkIndexOperation<Airport>(airport))
+            .Select(airport => new BulkIndexOperation<AirportDto>(airport))
             .Cast<IBulkOperation>()
             .ToList();
 

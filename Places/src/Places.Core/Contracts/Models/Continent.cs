@@ -1,4 +1,4 @@
-namespace Places.Infra.Csv.Models;
+namespace Places.Core.Contracts.Models;
 
 public enum Continent
 {

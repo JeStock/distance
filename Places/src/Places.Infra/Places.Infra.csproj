@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Places.Shared\Places.Shared.csproj" />
-      <ProjectReference Include="..\Places.Domain\Places.Domain.csproj" />
+      <ProjectReference Include="..\Places.Core\Places.Core.csproj" />
     </ItemGroup>
 
 </Project>

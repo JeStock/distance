@@ -1,39 +1,39 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Places.Infra;
-using Places.Infra.Csv;
-using Places.Infra.Elastic;
-using Places.Infra.Elastic.Models;
+using Places.Core.Contracts.Elastic;
+using Places.Core.Domain;
 using Places.Shared;
+using IAirportsRepository = Places.Core.Contracts.Csv.IAirportsRepository;
 
 namespace Places.DataSeeder;
 
 public class DataSeedBackgroundWorker(
-    IAirportsHandler airportsHandler,
-    IAirportIndexFacade airportIndexFacade)
+    IAirportsRepository airportsCsvRepository,
+    IAirportsIndexFacade airportsIndexFacade)
     : IHostedService, IDisposable
 {
     public async Task StartAsync(CancellationToken token)
     {
-        var indexCreated = await airportIndexFacade.CreateAirportsIndexAsync(token);
+        var indexCreated = await airportsIndexFacade.CreateAirportsIndexAsync(token);
         if (indexCreated == OperationResult.Failure) // TODO [sg]: add log
             return;
 
-        var recordBatches = airportsHandler.GetAirportsAsync(token).ProcessBatch(50, token);
+        var recordBatches = airportsCsvRepository.GetAirportsAsync(token).ProcessBatch(50, token);
         await foreach (var batch in recordBatches)
         {
-            var airports = batch.Select(AirportBuilder.Build)
+            var airports = batch.Select(Airport.Create)
                 .Where(x => x != null)
-                .Select(x => x!);
+                .Select(x => x!)
+                .ToList();
 
             // TODO [sg]: add log bach processed
-            await airportIndexFacade.BulkIndexAirportsAsync(airports, token);
+            await airportsIndexFacade.BulkIndexAirportsAsync(airports.Select(x => x.ToDto()), token);
         }
     }
 
     public Task StopAsync(CancellationToken token)
     {
-        return airportIndexFacade.DeleteAirportsIndexAsync(token);
+        return airportsIndexFacade.DeleteAirportsIndexAsync(token);
     }
 
-    public void Dispose() => airportsHandler.Dispose();
+    public void Dispose() => airportsCsvRepository.Dispose();
 }

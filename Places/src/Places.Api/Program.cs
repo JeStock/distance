@@ -1,49 +1,53 @@
-﻿using Places.Api;
-using Places.Api.Configuration;
+﻿using Places.Api.Configuration;
 using Places.DataSeeder;
 using Places.Infra;
-using Places.Infra.Elastic.Factories;
+using Serilog;
+using Serilog.Events;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.Async(x => x.Console())
+    .CreateLogger();
 
-builder.Services
-    .AddInfraModule(builder.Configuration)
-    .AddDataSeederModule(builder.Configuration);
-
-builder.Services.AddControllers(options => options.AddRoutesConventions());
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var builder = WebApplication.CreateBuilder(args);
 
-app.MapGet("/{iata}", async (string iata, IElasticClientFactory elasticFactory) =>
-{
-    var elastic = elasticFactory.GetClient();
-    var model = new TestModel
+    builder.Host.UseSerilog((context, services, config) => config
+            .ReadFrom.Configuration(context.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .WriteTo.Async(x => x.Console())
+        // TODO [sg]: add Elasticsearch + structured logs
+    );
+
+    builder.Services
+        .AddSwaggerGen()
+        .AddControllers(options => options.AddRoutesConventions())
+        .AddControllersAsServices();
+
+    builder.Services
+        .AddInfraModule(builder.Configuration)
+        .AddDataSeederModule(builder.Configuration);
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
     {
-        Id = 534, Message = "Hello Elastic"
-    };
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-    var indexResponse = await elastic.IndexAsync(model, "test-model-index");
-    if (indexResponse.IsValidResponse)
-        Console.WriteLine("TestMessage indexed successfully!");
+    app.MapControllers();
 
-    var response = await elastic.GetAsync<TestModel>(534, idx => idx.Index("test-model-index"));
-    if(response.IsValidResponse)
-        Console.WriteLine("Indexed TestMessage retrieved successfully!");
-
-    return $"Places responded '{iata}'";
-});
-
-app.Run();
-
-public class TestModel
+    app.Run();
+}
+catch (Exception e)
 {
-    public required long Id { get; init; }
-    public required string Message { get; init; }
+    Log.Fatal(e, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
 }
