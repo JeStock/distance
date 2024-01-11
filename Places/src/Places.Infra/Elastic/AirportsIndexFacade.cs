@@ -19,7 +19,6 @@ public class AirportsIndexFacade(IElasticClientFactory factory) : IAirportsIndex
         if (deleteIndexResponse == OperationResult.Failure)
             return OperationResult.Failure;
 
-        // TODO [sg]: add manual mapping settings
         var indexCreated = await indices
             .CreateAsync<Airport>(x => x.Index(AirportsIndexName), token);
 

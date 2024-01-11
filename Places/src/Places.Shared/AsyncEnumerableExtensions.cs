@@ -1,10 +1,11 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Places.Shared;
 
 public static class AsyncEnumerableExtensions
 {
-    public static async IAsyncEnumerable<IEnumerable<T>> ProcessBatch<T>(this IAsyncEnumerable<T> source,
+    public static async IAsyncEnumerable<ImmutableArray<T>> ProcessBatch<T>(this IAsyncEnumerable<T> source,
         int size, [EnumeratorCancellation] CancellationToken token = default)
     {
         var batch = new List<T>(size);
@@ -17,10 +18,10 @@ public static class AsyncEnumerableExtensions
             if (batch.Count < size)
                 continue;
 
-            yield return batch;
+            yield return batch.ToImmutableArray();
             batch = [];
         }
         if (batch.Count > 0)
-            yield return batch;
+            yield return batch.ToImmutableArray();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Frozen;
 
-namespace Places.Core;
+namespace Places.Shared;
 
 public static class EnumMapConverter
 {

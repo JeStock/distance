@@ -1,26 +1,14 @@
-﻿using Places.Api.Configuration;
-using Places.DataSeeder;
-using Places.Infra;
+﻿using Places.Api.Composition;
+using Places.Api.Configuration;
 using Serilog;
-using Serilog.Events;
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .Enrich.FromLogContext()
-    .WriteTo.Async(x => x.Console())
-    .CreateLogger();
+Log.Logger = LoggingConfiguration.InitSerilog();
 
 try
 {
-    var builder = WebApplication.CreateBuilder(args);
+    Log.Logger.Information("Places service bootstrapping!");
 
-    builder.Host.UseSerilog((context, services, config) => config
-            .ReadFrom.Configuration(context.Configuration)
-            .ReadFrom.Services(services)
-            .Enrich.FromLogContext()
-            .WriteTo.Async(x => x.Console())
-        // TODO [sg]: add Elasticsearch + structured logs
-    );
+    var builder = WebApplication.CreateBuilder(args);
 
     builder.Services
         .AddSwaggerGen()
@@ -28,9 +16,10 @@ try
         .AddControllersAsServices();
 
     builder.Services
-        .AddInfraModule(builder.Configuration)
+        .AddInfrastructureModule(builder.Configuration)
         .AddDataSeederModule(builder.Configuration);
 
+    builder.Host.ConfigureSerilog();
     var app = builder.Build();
 
     if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
@@ -40,7 +29,6 @@ try
     }
 
     app.MapControllers();
-
     app.Run();
 }
 catch (Exception e)

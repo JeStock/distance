@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Places.Core.Contracts.Csv;
+﻿using Places.Core.Contracts.Csv;
+using Places.DataSeeder;
 using Places.Infra.Csv;
 
-namespace Places.DataSeeder;
+namespace Places.Api.Composition;
 
 public static class DataSeederModule
 {
