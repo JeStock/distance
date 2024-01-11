@@ -1,3 +1,7 @@
+using CSharpFunctionalExtensions;
+using static Places.Core.Domain.Enums.AirportType;
+using static Places.Core.ErrorHandling;
+
 namespace Places.Core.Domain.Enums;
 
 public enum AirportType
@@ -8,24 +12,24 @@ public enum AirportType
     LargeAirport = 4
 }
 
-public static class AirportTypeExtensions
+public static class AirportTypeParser
 {
-    public static AirportType? ToDomain(this Contracts.Models.AirportType? type) =>
-        type switch
+    public static Result<AirportType> Parse(string? typeStr) =>
+        typeStr switch
         {
-            Contracts.Models.AirportType.Heliport => AirportType.Heliport,
-            Contracts.Models.AirportType.SmallAirport => AirportType.SmallAirport,
-            Contracts.Models.AirportType.MediumAirport => AirportType.MediumAirport,
-            Contracts.Models.AirportType.LargeAirport => AirportType.LargeAirport,
-            _ => (AirportType?)default
+            "heliport" => Heliport,
+            "small_airport" => SmallAirport,
+            "medium_airport" => MediumAirport,
+            "large_airport" => LargeAirport,
+            _ => FailWith<AirportType>("Airport type is invalid")
         };
 
-    public static Contracts.Models.AirportType ToDto(this AirportType type) =>
+    public static string ToString(this AirportType type) =>
         type switch
         {
-            AirportType.Heliport => Contracts.Models.AirportType.Heliport,
-            AirportType.SmallAirport => Contracts.Models.AirportType.SmallAirport,
-            AirportType.MediumAirport => Contracts.Models.AirportType.MediumAirport,
-            AirportType.LargeAirport => Contracts.Models.AirportType.LargeAirport
+            Heliport => "heliport",
+            SmallAirport => "small_airport",
+            MediumAirport => "medium_airport",
+            LargeAirport => "large_airport",
         };
 }

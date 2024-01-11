@@ -1,4 +1,7 @@
-﻿namespace Places.Core.Domain;
+﻿using CSharpFunctionalExtensions;
+using static Places.Core.ErrorHandling;
+
+namespace Places.Core.Domain;
 
 public record Icao
 {
@@ -8,11 +11,8 @@ public record Icao
 
     private Icao(string code) => Code = code;
 
-    public static Icao? Create(string? code)
-    {
-        if (code == null || DomainInvariants.IcaoPattern().IsMatch(code) == false)
-            return default;
-
-        return new Icao(code);
-    }
+    public static Result<Icao> Parse(string? code) =>
+        code == null || DomainInvariants.IcaoPattern().IsMatch(code) == false
+            ? FailWith<Icao>($"Icao code doesn't match pattern '{CodePattern}'")
+            : new Icao(code);
 }

@@ -1,8 +1,10 @@
-﻿using Places.Core.Contracts.Models;
+﻿using CSharpFunctionalExtensions;
+using Places.Core.Contracts.Models;
+using static Places.Core.ErrorHandling;
 
 namespace Places.Core.Domain;
 
-public record struct Location
+public readonly record struct Location
 {
     public double Longitude { get; }
     public double Latitude { get; }
@@ -13,23 +15,27 @@ public record struct Location
         Longitude = longitude;
     }
 
-    public static Location? Create(LocationDto dto)
+    private static Result<double> ParseLongitude(double? value) =>
+        !value.HasValue || Math.Abs(value.Value) > 180
+            ? FailWith<double>("Provided Longitude is invalid")
+            : value.Value;
+
+    private static Result<double> ParseLatitude(double? value) =>
+        !value.HasValue || Math.Abs(value.Value) > 90
+            ? FailWith<double>("Provided Latitude is invalid")
+            : value.Value;
+
+    public static Result<Location> Parse(LocationDto dto)
     {
-        if (!dto.Longitude.HasValue || Math.Abs(dto.Longitude.Value) > 180)
-            return default;
+        var longitude = ParseLongitude(dto.Longitude);
+        var latitude = ParseLatitude(dto.Latitude);
 
-        if (!dto.Latitude.HasValue || Math.Abs(dto.Latitude.Value) > 90)
-            return default;
-
-        return new Location(dto.Longitude.Value, dto.Latitude.Value);
+        var result = Combine(longitude, latitude);
+        return result.IsFailure
+            ? FailWith<Location>(result.Error)
+            : new Location(longitude.Value, latitude.Value);
     }
 
-    public LocationDto ToDto()
-    {
-        return new LocationDto
-        {
-            Latitude = Latitude,
-            Longitude = Longitude
-        };
-    }
+    public LocationDto ToDto() =>
+        new() { Latitude = Latitude, Longitude = Longitude };
 }

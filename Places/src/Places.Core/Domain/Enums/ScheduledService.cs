@@ -1,3 +1,7 @@
+using CSharpFunctionalExtensions;
+using static Places.Core.Domain.Enums.ScheduledService;
+using static Places.Core.ErrorHandling;
+
 namespace Places.Core.Domain.Enums;
 
 public enum ScheduledService
@@ -6,20 +10,20 @@ public enum ScheduledService
     No = 2
 }
 
-public static class ScheduledServiceExtensions
+public static class ScheduledServiceParser
 {
-    public static ScheduledService? MapToDomain(this Contracts.Models.ScheduledService? service) =>
-        service switch
+    public static Result<ScheduledService> Parse(string? serviceStr) =>
+        serviceStr switch
         {
-            Contracts.Models.ScheduledService.Yes => ScheduledService.Yes,
-            Contracts.Models.ScheduledService.No => ScheduledService.No,
-            _ => (ScheduledService?)default
+            "yes" => Yes,
+            "no" => No,
+            _ => FailWith<ScheduledService>("ScheduledService is invalid")
         };
 
-    public static Contracts.Models.ScheduledService ToDto(this ScheduledService type) =>
-        type switch
+    public static string ToString(this ScheduledService service) =>
+        service switch
         {
-            ScheduledService.Yes => Contracts.Models.ScheduledService.Yes,
-            ScheduledService.No => Contracts.Models.ScheduledService.Yes
+            Yes => "yes",
+            No => "no",
         };
 }

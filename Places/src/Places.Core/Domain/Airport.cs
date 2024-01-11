@@ -1,8 +1,7 @@
-﻿using Places.Core.Contracts.Models;
+﻿using CSharpFunctionalExtensions;
+using Places.Core.Contracts.Models;
 using Places.Core.Domain.Enums;
-using AirportType = Places.Core.Domain.Enums.AirportType;
-using Continent = Places.Core.Domain.Enums.Continent;
-using ScheduledService = Places.Core.Domain.Enums.ScheduledService;
+using static Places.Core.ErrorHandling;
 
 namespace Places.Core.Domain;
 
@@ -30,37 +29,27 @@ public class Airport
         Location = location;
     }
 
-    public static Airport? Create(AirportDto dto)
+    private static Result<string> ParseName(string? name) =>
+        name == null || string.IsNullOrWhiteSpace(name)
+            ? FailWith<string>("Provided Name is invalid")
+            : name;
+
+    public static Result<Airport> Parse(AirportDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            return default;
+        var name = ParseName(dto.Name);
+        var icao = Icao.Parse(dto.IcaoCode);
+        var iata = Iata.Parse(dto.IataCode);
+        var type = AirportTypeParser.Parse(dto.Type);
+        var continent = ContinentParser.Parse(dto.Continent);
+        var service = ScheduledServiceParser.Parse(dto.ScheduledService);
+        var location = Location.Parse(dto.Location);
 
-        var icao = Icao.Create(dto.IcaoCode);
-        if (icao == null)
-            return default;
+        var result = Combine(name, icao, iata, type, continent, service, location);
 
-        var iata = Iata.Create(dto.IataCode);
-        if (iata == null)
-            return default;
-
-        var type = dto.Type.ToDomain();
-        if (!type.HasValue)
-            return default;
-
-        var continent = dto.Continent.MapToDomain();
-        if (continent == null)
-            return default;
-
-        var service = dto.ScheduledService.MapToDomain();
-        if (service == null)
-            return default;
-
-        var location = Location.Create(dto.Location);
-        if (!location.HasValue)
-            return default;
-
-        return new Airport(dto.Id, dto.Name, icao, iata,
-            type.Value, continent.Value, service.Value, location.Value);
+        return result.IsFailure
+            ? FailWith<Airport>(result.Error)
+            : new Airport(dto.Id, name.Value, icao.Value, iata.Value,
+                type.Value, continent.Value, service.Value, location.Value);
     }
 
     public AirportDto ToDto() =>
@@ -70,9 +59,9 @@ public class Airport
             Name = Name,
             IcaoCode = Icao.Code,
             IataCode = Iata.Code,
-            Type = Type.ToDto(),
-            Continent = Continent.ToDto(),
-            ScheduledService = ScheduledService.ToDto(),
+            Type = AirportTypeParser.ToString(Type),
+            Continent = ContinentParser.ToString(Continent),
+            ScheduledService = ScheduledServiceParser.ToString(ScheduledService),
             Location = Location.ToDto(),
         };
 }

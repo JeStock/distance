@@ -6,7 +6,7 @@ Log.Logger = LoggingConfiguration.InitSerilog();
 
 try
 {
-    Log.Logger.Information("Places service bootstrapping!");
+    Log.Logger.Information("Bootstrapping Places service");
 
     var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,8 @@ try
 
     builder.Services
         .AddInfrastructureModule(builder.Configuration)
-        .AddDataSeederModule(builder.Configuration);
+        .AddDataSeederModule(builder.Configuration)
+        .AddApplicationModule(builder.Configuration);
 
     builder.Host.ConfigureSerilog();
     var app = builder.Build();

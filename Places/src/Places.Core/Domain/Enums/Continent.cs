@@ -1,3 +1,7 @@
+using CSharpFunctionalExtensions;
+using static Places.Core.Domain.Enums.Continent;
+using static Places.Core.ErrorHandling;
+
 namespace Places.Core.Domain.Enums;
 
 public enum Continent
@@ -11,30 +15,30 @@ public enum Continent
     SouthAmerica = 7
 }
 
-public static class ContentExtensions
+public static class ContinentParser
 {
-    public static Continent? MapToDomain(this Contracts.Models.Continent? continent) =>
-        continent switch
+    public static Result<Continent> Parse(string? continentStr) =>
+        continentStr switch
         {
-            Contracts.Models.Continent.Africa => Continent.Africa,
-            Contracts.Models.Continent.Antarctica => Continent.Antarctica,
-            Contracts.Models.Continent.Asia => Continent.Asia,
-            Contracts.Models.Continent.Europe => Continent.Europe,
-            Contracts.Models.Continent.NorthAmerica => Continent.NorthAmerica,
-            Contracts.Models.Continent.Oceania => Continent.Oceania,
-            Contracts.Models.Continent.SouthAmerica => Continent.SouthAmerica,
-            _ => (Continent?)default
+            "AF" => Africa,
+            "AN" => Antarctica,
+            "AS" => Asia,
+            "EU" => Europe,
+            "NA" => NorthAmerica,
+            "OC" => Oceania,
+            "SA" => SouthAmerica,
+            _ => FailWith<Continent>("Continent code is invalid")
         };
 
-    public static Contracts.Models.Continent ToDto(this Continent type) =>
-        type switch
+    public static string ToString(this Continent continent) =>
+        continent switch
         {
-            Continent.Africa => Contracts.Models.Continent.Africa,
-            Continent.Antarctica => Contracts.Models.Continent.Antarctica,
-            Continent.Asia => Contracts.Models.Continent.Asia,
-            Continent.Europe => Contracts.Models.Continent.Europe,
-            Continent.NorthAmerica => Contracts.Models.Continent.NorthAmerica,
-            Continent.Oceania => Contracts.Models.Continent.Oceania,
-            Continent.SouthAmerica => Contracts.Models.Continent.SouthAmerica,
+            Africa => "AF",
+            Antarctica => "AN",
+            Asia => "AS",
+            Europe => "EU",
+            NorthAmerica => "NA",
+            Oceania => "OC",
+            SouthAmerica => "SA"
         };
 }

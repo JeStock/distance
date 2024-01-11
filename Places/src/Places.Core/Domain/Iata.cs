@@ -1,4 +1,5 @@
-﻿using static Places.Core.DomainInvariants;
+﻿using CSharpFunctionalExtensions;
+using static Places.Core.ErrorHandling;
 
 namespace Places.Core.Domain;
 
@@ -10,11 +11,8 @@ public record Iata
 
     private Iata(string code) => Code = code;
 
-    public static Iata? Create(string? code)
-    {
-        if (code == null || IataPattern().IsMatch(code) == false)
-            return default;
-
-        return new Iata(code);
-    }
+    public static Result<Iata> Parse(string? code) =>
+        code == null || DomainInvariants.IataPattern().IsMatch(code) == false
+            ? FailWith<Iata>($"Iata code doesn't match pattern '{CodePattern}'")
+            : new Iata(code);
 }

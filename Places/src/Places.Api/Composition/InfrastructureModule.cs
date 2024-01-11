@@ -3,10 +3,11 @@ using Places.Api.Configuration;
 using Places.Core.Contracts.Elastic;
 using Places.Infra.Elastic;
 using Places.Shared;
+using AirportsRepository = Places.Infra.Elastic.AirportsRepository;
 
 namespace Places.Api.Composition;
 
-public static class InfraModule
+public static class InfrastructureModule
 {
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services, IConfiguration config)
     {
@@ -19,6 +20,8 @@ public static class InfraModule
 
         services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
         services.AddSingleton<IAirportsIndexFacade, AirportsIndexFacade>();
+
+        services.AddSingleton<IAirportsRepository, AirportsRepository>();
 
         return services;
     }

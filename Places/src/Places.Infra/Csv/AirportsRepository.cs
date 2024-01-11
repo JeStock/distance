@@ -7,7 +7,6 @@ using Places.Infra.Csv.Mapping;
 
 namespace Places.Infra.Csv;
 
-// TODO [sg]: comment on Dispose Pattern
 public class AirportsRepository : IAirportsRepository
 {
     private StreamReader? streamReader;
