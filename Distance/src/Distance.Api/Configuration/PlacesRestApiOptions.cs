@@ -1,6 +1,6 @@
-﻿namespace Distance.PlacesClient.Configuration;
+﻿namespace Distance.Api.Configuration;
 
-public class PlacesRestApi
+public class PlacesRestApiOptions
 {
     public required string Url { get; init; }
     public required int RetryCount { get; init; }

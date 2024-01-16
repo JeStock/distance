@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Places.Core.Contracts.Models;
-using AirportDomain = Places.Core.Domain.Airport;
+﻿using Places.Core.Contracts.Models;
+using Places.Core.Domain;
 
-namespace Places.Api.Models.Responses;
+namespace Places.Core.Contracts.Api.Responses;
 
-public class Airport
+public class AirportResponse
 {
     public required int Id { get; init; }
     public required string Name { get; init; }
@@ -13,13 +12,10 @@ public class Airport
     public required string Type { get; init; }
     public required string Continent { get; init; }
     public required string ScheduledService { get; init; }
-    public required LocationDto Location { get; init; } = new();
-}
+    public required LocationDto Location { get; init; }
 
-public static class AirportResponseExtensions
-{
-    public static IActionResult OkResponse(AirportDomain domain) =>
-        new OkObjectResult(new Airport
+    public static AirportResponse FromDomain(Airport domain) =>
+        new()
         {
             Id = domain.Id,
             Name = domain.Name,
@@ -29,5 +25,5 @@ public static class AirportResponseExtensions
             Continent = domain.Continent.ToString(),
             ScheduledService = domain.ScheduledService.ToString(),
             Location = domain.Location.ToDto()
-        });
+        };
 }

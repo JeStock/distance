@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 using static Places.Core.Domain.Enums.AirportType;
-using static Places.Core.ErrorHandling;
+using static Places.Shared.ErrorHandling;
 
 namespace Places.Core.Domain.Enums;
 

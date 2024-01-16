@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using Places.Core.Contracts.Models;
-using static Places.Core.ErrorHandling;
+using static Places.Shared.ErrorHandling;
 
 namespace Places.Core.Domain;
 

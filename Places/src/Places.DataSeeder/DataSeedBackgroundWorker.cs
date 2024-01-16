@@ -5,7 +5,7 @@ using Places.Core;
 using Places.Core.Contracts.Elastic;
 using Places.Core.Domain;
 using Places.Shared;
-using static Places.Core.ErrorHandling;
+using static Places.Shared.ErrorHandling;
 using IAirportsRepository = Places.Core.Contracts.Csv.IAirportsRepository;
 
 namespace Places.DataSeeder;

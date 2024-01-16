@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Places.Core.Contracts.Models;
 using Places.Core.Domain.Enums;
-using static Places.Core.ErrorHandling;
+using static Places.Shared.ErrorHandling;
 
 namespace Places.Core.Domain;
 
@@ -44,12 +44,11 @@ public class Airport
         var service = ScheduledServiceParser.Parse(dto.ScheduledService);
         var location = Location.Parse(dto.Location);
 
-        var result = Combine(name, icao, iata, type, continent, service, location);
-
-        return result.IsFailure
-            ? FailWith<Airport>(result.Error)
-            : new Airport(dto.Id, name.Value, icao.Value, iata.Value,
-                type.Value, continent.Value, service.Value, location.Value);
+        return Combine(name, icao, iata, type, continent, service, location)
+            .Map(() =>
+                new Airport(dto.Id, name.Value, icao.Value, iata.Value,
+                    type.Value, continent.Value, service.Value, location.Value)
+            );
     }
 
     public AirportDto ToDto() =>

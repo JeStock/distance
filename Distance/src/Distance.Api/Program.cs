@@ -1,27 +1,39 @@
-using Distance.PlacesClient;
+using Distance.Api.Composition;
+using Distance.Api.Configuration;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = LoggingConfiguration.InitSerilog();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddPlacesClientModule(builder.Configuration);
-
-var app = builder.Build();
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    Log.Logger.Information("Bootstrapping Places service");
 
-app.MapGet("api/{iata}", async (string iata, IPlacesRestApi placesApi) =>
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services
+        .AddSwaggerGen()
+        .AddControllers(options => options.AddRoutesConventions())
+        .AddControllersAsServices();
+
+    builder.Services.AddInfrastructureModule(builder.Configuration);
+
+    builder.Host.ConfigureSerilog();
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
     {
-        var response = await placesApi.GetPlaceAsync(iata, default);
-        return response.ResponseMessage.IsSuccessStatusCode
-            ? $"Hello from Distance & Places: {response.StringContent}!"
-            : $"Hello from Distance: {iata}!";
-    })
-    .WithName("Calculate the distance between two airports")
-    .WithOpenApi();
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-app.Run();
+    app.MapControllers();
+    app.Run();
+}
+catch (Exception e)
+{
+    Log.Fatal(e, "Application terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

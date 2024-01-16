@@ -1,9 +1,9 @@
 ﻿using CSharpFunctionalExtensions;
-using static Places.Shared.ErrorHandling;
+using static Distance.Shared.ErrorHandling;
 
-namespace Places.Core.Domain;
+namespace Distance.Core.Domain;
 
-public record Iata
+public class Iata
 {
     public const string CodePattern = "^[A-Z]{3}$";
 

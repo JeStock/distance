@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace Places.Shared;
+﻿namespace Distance.Api.Configuration;
 
 public static class ConfigurationExtensions
 {

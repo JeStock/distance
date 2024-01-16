@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace Places.Core;
+namespace Places.Shared;
 
 public static class ErrorHandling
 {

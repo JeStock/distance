@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Places.Core.Contracts.Services;
 using Places.Core.Domain;
 using Airport = Places.Core.Domain.Airport;
-using static Places.Api.Models.Responses.AirportResponseExtensions;
+using static Places.Api.ApiHelpers;
 
 namespace Places.Api.Controllers;
 

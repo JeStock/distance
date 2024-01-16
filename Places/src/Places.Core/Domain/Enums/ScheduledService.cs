@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
 using static Places.Core.Domain.Enums.ScheduledService;
-using static Places.Core.ErrorHandling;
+using static Places.Shared.ErrorHandling;
 
 namespace Places.Core.Domain.Enums;
 
