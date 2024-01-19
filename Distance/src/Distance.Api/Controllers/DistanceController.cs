@@ -1,51 +1,35 @@
-﻿using Distance.Api.Models;
+﻿using CSharpFunctionalExtensions;
+using Distance.Api.Models;
 using Distance.Core.Contracts.Models;
 using Distance.Core.Contracts.Services;
-using Distance.Infra.Clients;
+using Distance.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Distance.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class DistanceController(
-    IDistanceService service,
-    IPlacesRestApi placesApi) : ControllerBase
+public class DistanceController(IDistanceService service) : ControllerBase
 {
     [HttpGet]
-    [ProducesResponseType<string>(StatusCodes.Status200OK)]
+    [ProducesResponseType<DistanceDto>(StatusCodes.Status200OK)]
     [ProducesResponseType<NotFoundResult>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<BadRequestResult>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetPlaceByIataAsync(
         [FromQuery] DistanceQuery query,
         CancellationToken token = default)
     {
-        var itinerary = new ItineraryDto(query.Origin, query.Destination);
-        var distance = service.GetDistanceAsync(itinerary, token);
+        if (query.Origin == query.Destination)
+            return Ok(new DistanceDto(0));
 
-        var originTask = placesApi.GetAirportByIataAsync(query.Origin, token);
-        var destinationTask = placesApi.GetAirportByIataAsync(query.Destination, token);
+        var itinerary = Itinerary.Parse(query.Origin, query.Destination);
+        if (itinerary.IsFailure)
+            return BadRequest(itinerary.Error);
 
-        await Task.WhenAll(originTask, destinationTask);
-
-        var origin = originTask.Result;
-        var destination = destinationTask.Result;
-
-        if (origin.ResponseMessage.IsSuccessStatusCode && destination.ResponseMessage.IsSuccessStatusCode)
-        {
-            var originLocation = origin.GetContent().Location;
-            var originCoordinate = new Geolocation.Coordinate(
-                originLocation.Latitude,
-                originLocation.Longitude);
-
-            var destinationLocation = destination.GetContent().Location;
-            var destinationCoordinate = new Geolocation.Coordinate(
-                destinationLocation.Latitude,
-                destinationLocation.Longitude);
-
-            return Ok(Geolocation.GeoCalculator.GetDistance(originCoordinate, destinationCoordinate));
-        }
-
-        return BadRequest();
+        return await service.GetDistanceAsync(itinerary.Value, token)
+            .Match(
+                onSuccess: distanceDto => (IActionResult) Ok(distanceDto),
+                onFailure: NotFound
+            );
     }
 }

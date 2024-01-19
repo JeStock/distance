@@ -7,7 +7,7 @@ namespace Distance.Infra.Providers;
 
 public class AirportsProvider(IPlacesRestApi client) : IAirportsProvider
 {
-    public async Task<Maybe<AirportDto>> GetAsync(string iata, CancellationToken token)
+    public async Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token)
     {
         var response = await client.GetAirportByIataAsync(iata, token);
         return response.GetContent();

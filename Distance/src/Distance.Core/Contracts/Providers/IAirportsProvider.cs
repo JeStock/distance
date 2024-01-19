@@ -5,5 +5,5 @@ namespace Distance.Core.Contracts.Providers;
 
 public interface IAirportsProvider
 {
-    Task<Maybe<AirportDto>> GetAsync(string iata, CancellationToken token);
+    Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token);
 }

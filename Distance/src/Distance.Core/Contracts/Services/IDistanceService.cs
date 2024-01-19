@@ -6,5 +6,5 @@ namespace Distance.Core.Contracts.Services;
 
 public interface IDistanceService
 {
-    Task<Result<DistanceDto>> GetDistanceAsync(ItineraryDto dto, CancellationToken token = default);
+    Task<Result<DistanceDto>> GetDistanceAsync(Itinerary itinerary, CancellationToken token = default);
 }

@@ -1,5 +1,4 @@
 ﻿using CSharpFunctionalExtensions;
-using Distance.Core.Contracts.Models;
 
 namespace Distance.Core.Domain;
 
@@ -14,14 +13,12 @@ public class Itinerary
         Destination = destination;
     }
 
-    public static Result<Itinerary> Parse(ItineraryDto dto)
+    public static Result<Itinerary> Parse(string origin, string destination)
     {
-        var origin = Iata.Parse(dto.Origin);
-        var destination = Iata.Parse(dto.Destination);
+        var originIata = Iata.Parse(origin);
+        var destinationIata = Iata.Parse(destination);
 
-        return Result.Combine(origin, destination)
-            .Map(() => new Itinerary(origin.Value, destination.Value));
+        return Result.Combine(originIata, destinationIata)
+            .Map(() => new Itinerary(originIata.Value, destinationIata.Value));
     }
-
-    public ItineraryDto ToDto() => new(Origin.Code, Destination.Code);
 }

@@ -1,17 +1,15 @@
-﻿/*namespace Distance.Core.Domain.Enums;
+﻿using Geolocation;
 
-public enum DistanceUnit
-{
-    Miles = 1,
-    Kilometers = 2,
-}
+namespace Distance.Core.Contracts;
 
-public static class DistanceUnitParser
+public static class DistanceUnitHelper
 {
     public static string ToString(this DistanceUnit type) =>
         type switch
         {
             DistanceUnit.Miles => "mi",
             DistanceUnit.Kilometers => "km",
+            DistanceUnit.NauticalMiles => "nm",
+            DistanceUnit.Meters => "m"
         };
-}*/
+}

@@ -10,15 +10,16 @@ public class AirportsProviderCacheDecorator(
     IRepository<AirportDto> repository)
     : IAirportsProvider
 {
-    public async Task<Maybe<AirportDto>> GetAsync(string iata, CancellationToken token)
+    public async Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token)
     {
         var cached = await repository.GetAsync(iata, token);
         if (cached != null)
             return cached;
 
-        var placeDto = await airportsProvider.GetAsync(iata, token);
-        await repository.SetAsync(iata, null, token);
+        var response = await airportsProvider.GetAirportByIataAsync(iata, token);
+        if (response.HasValue)
+            await repository.SetAsync(iata, response.Value, token);
 
-        return placeDto;
+        return response;
     }
 }

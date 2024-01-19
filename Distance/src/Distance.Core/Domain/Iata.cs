@@ -3,7 +3,7 @@ using static Distance.Shared.ErrorHandling;
 
 namespace Distance.Core.Domain;
 
-public class Iata
+public record Iata
 {
     public const string CodePattern = "^[A-Z]{3}$";
 

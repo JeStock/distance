@@ -20,4 +20,8 @@
         <ProjectReference Include="..\Distance.Core\Distance.Core.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>
