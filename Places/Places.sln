@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Core", "src\Places.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Application", "src\Places.Application\Places.Application.csproj", "{FD6B3EE8-2101-4CFB-9EE9-42BE8B3D5E2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Code.Tests", "tests\Places.Code.Tests\Places.Code.Tests.csproj", "{524C1F77-FDC6-47D0-889F-76D9F4C75B2F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Places.Core.Tests", "tests\Places.Core.Tests\Places.Core.Tests.csproj", "{524C1F77-FDC6-47D0-889F-76D9F4C75B2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

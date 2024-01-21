@@ -5,8 +5,8 @@ namespace Places.Shared;
 
 public static class AsyncEnumerableExtensions
 {
-    public static async IAsyncEnumerable<ImmutableArray<T>> ProcessBatch<T>(this IAsyncEnumerable<T> source,
-        int size, [EnumeratorCancellation] CancellationToken token = default)
+    public static async IAsyncEnumerable<ImmutableArray<T>> ProcessBatch<T>(
+        this IAsyncEnumerable<T> source, int size, [EnumeratorCancellation] CancellationToken token = default)
     {
         var batch = new List<T>(size);
         await foreach (var item in source.WithCancellation(token))

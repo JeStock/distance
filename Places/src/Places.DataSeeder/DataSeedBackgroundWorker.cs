@@ -71,14 +71,10 @@ public class DataSeedBackgroundWorker(
 
             foreach (var airportDto in batch)
             {
-                var parsingResult = Airport.Parse(airportDto);
-                parsingResult.Match(
+                Airport.Parse(airportDto).Match(
                     airport => batchParsedAirports.Add(airport),
-                    parseError =>
-                    {
-                        // TODO [sg]: index error reports
-                        batchParseErrors.Add(parseError);
-                    });
+                    parseError => batchParseErrors.Add(parseError)
+                );
             }
 
             skippedCount += batchParseErrors.Count;

@@ -7,7 +7,7 @@ public class DistanceResponse
     public required double Distance { get; init; }
     public required string UnitsOfMeasure { get; init; }
 
-    public static DistanceResponse FromDomain(Domain.Distance domain) =>
+    public static DistanceResponse FromDomain(Domain.ItineraryDistance domain) =>
         new()
         {
             OriginAirportName = domain.OriginAirportName,

@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using Distance.Core.Contracts.Models;
 using Distance.Core.Contracts.Providers;
+using Distance.Core.Domain;
 using Distance.Infra.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +13,7 @@ public class AirportsProviderCacheDecorator(
     ILogger<AirportsProviderCacheDecorator> logger)
     : IAirportsProvider
 {
-    public async Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token = default)
+    public async Task<Maybe<AirportDto>> GetAirportAsync(string iata, CancellationToken token = default)
     {
         var cached = await repository.GetAsync(iata);
         if (cached != null)
@@ -21,7 +22,7 @@ public class AirportsProviderCacheDecorator(
             return cached;
         }
 
-        var response = await airportsProvider.GetAirportByIataAsync(iata, token);
+        var response = await airportsProvider.GetAirportAsync(iata, token);
         if (response.HasValue)
         {
             logger.LogInformation("Caching airport {Iata}", iata);
@@ -30,4 +31,8 @@ public class AirportsProviderCacheDecorator(
 
         return response;
     }
+
+    public Task<Result<(AirportDto Origin, AirportDto Destination)>> GetItineraryAirportsAsync(
+        Itinerary itinerary, CancellationToken token = default) =>
+        airportsProvider.GetItineraryAirportsAsync(itinerary, token);
 }

@@ -5,6 +5,6 @@ namespace Distance.Api;
 
 public static class ApiHelpers
 {
-    public static IActionResult OkResponse(Core.Domain.Distance dto) =>
+    public static IActionResult OkResponse(Core.Domain.ItineraryDistance dto) =>
         new OkObjectResult(DistanceResponse.FromDomain(dto));
 }

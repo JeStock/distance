@@ -2,12 +2,12 @@
 using Places.Core.Contracts.Models;
 using Places.Core.Domain;
 
-namespace Places.Code.Tests;
+namespace Places.Core.Tests;
 
 public class LocationTest
 {
     [Fact]
-    public void Test002()
+    public void Test001()
     {
         var airportDto = new AirportDto
         {
@@ -20,8 +20,7 @@ public class LocationTest
             ScheduledService = "yes",
             Location = new LocationDto
             {
-                Longitude = 30,
-                Latitude = 30
+                Longitude = 30, Latitude = 30
             }
         };
 
@@ -30,7 +29,7 @@ public class LocationTest
     }
 
     [Fact]
-    public void Test003()
+    public void Test002()
     {
         var airportDto = new AirportDto
         {
@@ -43,8 +42,7 @@ public class LocationTest
             ScheduledService = "yes",
             Location = new LocationDto
             {
-                Longitude = 30,
-                Latitude = 30
+                Longitude = 30, Latitude = 30
             }
         };
 

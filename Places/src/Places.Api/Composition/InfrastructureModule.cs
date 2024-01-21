@@ -20,7 +20,6 @@ public static class InfrastructureModule
 
         services.AddSingleton<IElasticClientFactory, ElasticClientFactory>();
         services.AddSingleton<IAirportsIndexFacade, AirportsIndexFacade>();
-
         services.AddSingleton<IAirportsRepository, AirportsRepository>();
 
         return services;

@@ -17,8 +17,8 @@ try
 
     builder.Services
         .AddInfrastructureModule(builder.Configuration)
-        .AddDataSeederModule(builder.Configuration)
-        .AddApplicationModule(builder.Configuration);
+        .AddDataSeederModule()
+        .AddApplicationModule();
 
     builder.Host.ConfigureSerilog();
     var app = builder.Build();

@@ -5,6 +5,6 @@ namespace Places.Api.Composition;
 
 public static class ApplicationModule
 {
-    public static IServiceCollection AddApplicationModule(this IServiceCollection services, IConfiguration config) =>
+    public static IServiceCollection AddApplicationModule(this IServiceCollection services) =>
         services.AddScoped<IAirportsService, AirportsService>();
 }
