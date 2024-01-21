@@ -7,24 +7,11 @@ namespace Distance.Infra.Providers;
 
 public class AirportsProvider(IPlacesRestApi client) : IAirportsProvider
 {
-    public async Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token)
+    public async Task<Maybe<AirportDto>> GetAirportByIataAsync(string iata, CancellationToken token = default)
     {
         var response = await client.GetAirportByIataAsync(iata, token);
-        return response.GetContent();
-        /*return new AirportDto
-        {
-            Id = 1,
-            Name = "name",
-            IcaoCode = "icao",
-            IataCode = "iata",
-            Type = "type",
-            Continent = "content",
-            ScheduledService = "yes",
-            Location = new LocationDto
-            {
-                Latitude = 30,
-                Longitude = 30
-            }
-        };*/
+        return response.ResponseMessage.IsSuccessStatusCode
+            ? response.GetContent()
+            : Maybe<AirportDto>.None;
     }
 }

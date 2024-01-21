@@ -6,7 +6,7 @@ Log.Logger = LoggingConfiguration.InitSerilog();
 
 try
 {
-    Log.Logger.Information("Bootstrapping Places service");
+    Log.Logger.Information("Bootstrapping Distance service");
 
     var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,9 @@ try
         .AddControllers(options => options.AddRoutesConventions())
         .AddControllersAsServices();
 
-    builder.Services.AddInfrastructureModule(builder.Configuration);
+    builder.Services
+        .AddInfrastructureModule(builder.Configuration)
+        .AddApplicationService();
 
     builder.Host.ConfigureSerilog();
     var app = builder.Build();

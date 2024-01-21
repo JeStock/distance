@@ -2,6 +2,6 @@
 
 public interface IRepository<T> where T : class
 {
-    Task<T?> GetAsync(string key, CancellationToken token = default);
-    Task SetAsync(string key, T value, CancellationToken token = default);
+    Task<T?> GetAsync(string key);
+    Task SetAsync(string key, T value);
 }

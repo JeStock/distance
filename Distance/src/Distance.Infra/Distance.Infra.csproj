@@ -13,15 +13,12 @@
         <PackageReference Include="StackExchange.Redis" Version="2.7.10"/>
         <PackageReference Include="StackExchange.Redis.Extensions" Version="1.0.1"/>
         <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="10.1.0"/>
+        <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="10.0.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Distance.Shared\Distance.Shared.csproj"/>
         <ProjectReference Include="..\Distance.Core\Distance.Core.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

@@ -16,15 +16,11 @@ public readonly record struct Location
         Longitude = longitude;
     }
 
-    public DistanceDto DistanceTo(Location other) =>
-        new()
-        {
-            Units = DistanceUnit.Kilometers.ToString(),
-            Distance = GeoCalculator.GetDistance(
-                new Coordinate(Latitude, Longitude),
-                new Coordinate(other.Latitude, other.Longitude),
-                distanceUnit: DistanceUnit.Kilometers)
-        };
+    public double DistanceTo(Location other) =>
+        GeoCalculator.GetDistance(
+            new Coordinate(Latitude, Longitude),
+            new Coordinate(other.Latitude, other.Longitude),
+            distanceUnit: DistanceUnit.Kilometers);
 
     private static Result<double> ParseLatitude(double? value) =>
         !value.HasValue || Math.Abs(value.Value) > 90

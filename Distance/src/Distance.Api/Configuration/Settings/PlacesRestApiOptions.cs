@@ -1,4 +1,4 @@
-﻿namespace Distance.Api.Configuration;
+﻿namespace Distance.Api.Configuration.Settings;
 
 public class PlacesRestApiOptions
 {

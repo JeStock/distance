@@ -4,6 +4,7 @@ using Distance.Core.Contracts.Models;
 using Distance.Core.Contracts.Services;
 using Distance.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
+using static Distance.Api.ApiHelpers;
 
 namespace Distance.Api.Controllers;
 
@@ -19,16 +20,13 @@ public class DistanceController(IDistanceService service) : ControllerBase
         [FromQuery] DistanceQuery query,
         CancellationToken token = default)
     {
-        if (query.Origin == query.Destination)
-            return Ok(new DistanceDto(0));
-
         var itinerary = Itinerary.Parse(query.Origin, query.Destination);
         if (itinerary.IsFailure)
             return BadRequest(itinerary.Error);
 
         return await service.GetDistanceAsync(itinerary.Value, token)
             .Match(
-                onSuccess: distanceDto => (IActionResult) Ok(distanceDto),
+                onSuccess: OkResponse,
                 onFailure: NotFound
             );
     }

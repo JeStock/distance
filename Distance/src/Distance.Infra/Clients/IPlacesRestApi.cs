@@ -7,5 +7,6 @@ namespace Distance.Infra.Clients;
 public interface IPlacesRestApi
 {
     [Get("api/airports/{iata}")]
+    [AllowAnyStatusCode]
     Task<Response<AirportDto>> GetAirportByIataAsync([Path] string iata, CancellationToken token);
 }

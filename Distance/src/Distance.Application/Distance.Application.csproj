@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Geolocation" Version="1.2.1" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Distance.Core\Distance.Core.csproj" />
     </ItemGroup>
 
