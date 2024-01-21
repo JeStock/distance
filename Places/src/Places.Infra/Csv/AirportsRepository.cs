@@ -16,8 +16,9 @@ public class AirportsRepository : IAirportsRepository
     public IAsyncEnumerable<AirportDto> GetAirportsAsync(CancellationToken token = default)
     {
         var projectRootPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        var pathToFile = Path.Combine(projectRootPath!, "airports.csv");
 
-        streamReader = new StreamReader($"""{projectRootPath}\airports.csv""");
+        streamReader = new StreamReader(pathToFile);
         csvReader = new CsvReader(streamReader, CultureInfo.InvariantCulture);
 
         csvReader.Context.RegisterClassMap<AirportDtoMap>();

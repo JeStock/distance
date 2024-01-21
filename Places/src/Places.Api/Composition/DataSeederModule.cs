@@ -6,8 +6,8 @@ namespace Places.Api.Composition;
 
 public static class DataSeederModule
 {
-    public static IServiceCollection AddDataSeederModule(this IServiceCollection services, IConfiguration config)
-        => services
-            .AddScoped<IAirportsRepository, AirportsRepository>()
+    public static IServiceCollection AddDataSeederModule(this IServiceCollection services, IConfiguration config) =>
+        services
+            .AddSingleton<IAirportsRepository, AirportsRepository>()
             .AddHostedService<DataSeedBackgroundWorker>();
 }

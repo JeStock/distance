@@ -1,4 +1,4 @@
-﻿using Places.Shared;
+﻿using Places.Api.Configuration.Settings;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.Elasticsearch;

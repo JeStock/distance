@@ -46,7 +46,7 @@ public class DataSeedBackgroundWorker(
         var indexCreated = await airportsIndexFacade.CreateAirportsIndexAsync(token);
         if (indexCreated == OperationResult.Failure)
         {
-            logger.LogInformation("Failed to create Airports index");
+            logger.LogWarning("Failed to create Airports index");
             return;
         }
 

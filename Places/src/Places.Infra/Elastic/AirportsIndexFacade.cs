@@ -1,5 +1,6 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.Core.Bulk;
+using Microsoft.Extensions.Logging;
 using Places.Core;
 using Places.Core.Contracts.Elastic;
 using Places.Core.Contracts.Models;
@@ -8,7 +9,7 @@ using static Places.Infra.Elastic.IndexNames;
 
 namespace Places.Infra.Elastic;
 
-public class AirportsIndexFacade(IElasticClientFactory factory) : IAirportsIndexFacade
+public class AirportsIndexFacade(IElasticClientFactory factory, ILogger<AirportsIndexFacade> logger) : IAirportsIndexFacade
 {
     private readonly Indices airportsIndex = Indices.Parse(AirportsIndexName);
 
@@ -23,6 +24,9 @@ public class AirportsIndexFacade(IElasticClientFactory factory) : IAirportsIndex
         var indexCreated = await indices
             .CreateAsync<Airport>(x => x.Index(AirportsIndexName), token);
 
+        if (!indexCreated.IsSuccess())
+            logger.LogError(indexCreated.ApiCallDetails.OriginalException, "Failed to create index");
+
         return ToResult(indexCreated.IsSuccess());
     }
 
@@ -35,6 +39,8 @@ public class AirportsIndexFacade(IElasticClientFactory factory) : IAirportsIndex
             return OperationResult.Success;
 
         var indexDeleted = await indices.DeleteAsync(airportsIndex, token);
+        if (!indexDeleted.IsSuccess())
+            logger.LogError(indexDeleted.ApiCallDetails.OriginalException, "Failed to delete index");
 
         return ToResult(indexDeleted.IsSuccess());
     }

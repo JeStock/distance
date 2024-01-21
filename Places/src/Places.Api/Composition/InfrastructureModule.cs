@@ -1,8 +1,8 @@
 ﻿using Elastic.Clients.Elasticsearch;
 using Places.Api.Configuration;
+using Places.Api.Configuration.Settings;
 using Places.Core.Contracts.Elastic;
 using Places.Infra.Elastic;
-using Places.Shared;
 using AirportsRepository = Places.Infra.Elastic.AirportsRepository;
 
 namespace Places.Api.Composition;
