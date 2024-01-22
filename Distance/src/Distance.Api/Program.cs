@@ -1,5 +1,7 @@
+using System.Reflection;
 using Distance.Api.Composition;
 using Distance.Api.Configuration;
+using Microsoft.OpenApi.Models;
 using Serilog;
 
 Log.Logger = LoggingConfiguration.InitSerilog();
@@ -11,7 +13,16 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services
-        .AddSwaggerGen()
+        .AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Distance Service Api"
+            });
+
+            options.EnableAnnotations();
+        })
         .AddControllers(options => options.AddRoutesConventions())
         .AddControllersAsServices();
 
@@ -39,3 +50,5 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+public partial class Program { }

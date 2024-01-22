@@ -4,6 +4,7 @@ COPY src/ src/
 COPY tests/ tests/
 COPY *.sln .
 RUN dotnet restore
+RUN dotnet test tests/Distance.Core.Tests/Distance.Core.Tests.csproj
 RUN dotnet publish -c release -o /app-publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0

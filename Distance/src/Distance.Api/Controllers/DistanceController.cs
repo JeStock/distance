@@ -1,9 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using Distance.Api.Models;
-using Distance.Core.Contracts.Models;
+using Distance.Api.Models.Requests;
+using Distance.Api.Models.Responses;
 using Distance.Core.Contracts.Services;
 using Distance.Core.Domain;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using static Distance.Api.ApiHelpers;
 
 namespace Distance.Api.Controllers;
@@ -13,7 +14,8 @@ namespace Distance.Api.Controllers;
 public class DistanceController(IDistanceService service) : ControllerBase
 {
     [HttpGet]
-    [ProducesResponseType<DistanceDto>(StatusCodes.Status200OK)]
+    [SwaggerOperation(Summary = "Calculates distance between two airports specified by their IATA codes")]
+    [ProducesResponseType<DistanceResponse>(StatusCodes.Status200OK)]
     [ProducesResponseType<NotFoundResult>(StatusCodes.Status404NotFound)]
     [ProducesResponseType<BadRequestResult>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetPlaceByIataAsync(
@@ -27,7 +29,7 @@ public class DistanceController(IDistanceService service) : ControllerBase
         return await service.GetDistanceAsync(itinerary.Value, token)
             .Match(
                 onSuccess: OkResponse,
-                onFailure: NotFound
+                onFailure: NotFoundResponse
             );
     }
 }
