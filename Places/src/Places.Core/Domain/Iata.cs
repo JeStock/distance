@@ -13,6 +13,6 @@ public record Iata
 
     public static Result<Iata> Parse(string? code) =>
         code == null || DomainInvariants.IataPattern().IsMatch(code) == false
-            ? FailWith<Iata>($"Iata code doesn't match pattern '{CodePattern}'")
+            ? FailWith<Iata>($"'{code}' doesn't match IATA pattern '{CodePattern}'")
             : new Iata(code);
 }

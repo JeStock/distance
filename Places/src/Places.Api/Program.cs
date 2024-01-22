@@ -1,4 +1,5 @@
-﻿using Places.Api.Composition;
+﻿using Microsoft.OpenApi.Models;
+using Places.Api.Composition;
 using Places.Api.Configuration;
 using Serilog;
 
@@ -11,7 +12,16 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services
-        .AddSwaggerGen()
+        .AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Version = "v1",
+                Title = "Places Service Api"
+            });
+
+            options.EnableAnnotations();
+        })
         .AddControllers(options => options.AddRoutesConventions())
         .AddControllersAsServices();
 
@@ -40,3 +50,5 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+public partial class Program { }

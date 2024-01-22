@@ -5,12 +5,12 @@ services:
   redis:
     image: redis:latest
     ports:
-      - 6379:6379
+      - "6379:6379"
 
   elasticsearch:
     image: elasticsearch:8.11.3
     ports:
-      - 9200:9200
+      - "9200:9200"
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -30,12 +30,21 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Development
-      - PRJ=Api
     ports:
-      - 5789:80
+      - "5789:80"
     depends_on:
       elasticsearch:
         condition: service_healthy
+
+  distance:
+    build: ./Distance
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5788:80"
+    depends_on:
+      - redis
 
   # kibana:
   #   image: kibana:8.11.3
@@ -47,14 +56,3 @@ services:
   #   depends_on:
   #     elasticsearch:
   #       condition: service_healthy
-
-  # distance:
-  #   build: ./Distance
-  #   environment:
-  #     - ASPNETCORE_URLS=http://+:80
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - PRJ=Api
-  #   ports:
-  #     - 5788:80
-  #   depends_on:
-  #     - redis

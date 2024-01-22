@@ -10,12 +10,21 @@ using IAirportsRepository = Places.Core.Contracts.Csv.IAirportsRepository;
 
 namespace Places.DataSeeder;
 
-public class DataSeedBackgroundWorker(
-    IAirportsRepository airportsCsvRepository,
-    IAirportsIndexFacade airportsIndexFacade,
-    ILogger<DataSeedBackgroundWorker> logger)
-    : IHostedService, IDisposable
+public class DataSeedBackgroundWorker : IHostedService, IDisposable
 {
+    private readonly IAirportsRepository airportsCsvRepository;
+    private readonly IAirportsIndexFacade airportsIndexFacade;
+    private readonly ILogger<DataSeedBackgroundWorker> logger;
+
+    public DataSeedBackgroundWorker(IAirportsRepository airportsCsvRepository,
+        IAirportsIndexFacade airportsIndexFacade,
+        ILogger<DataSeedBackgroundWorker> logger)
+    {
+        this.airportsCsvRepository = airportsCsvRepository;
+        this.airportsIndexFacade = airportsIndexFacade;
+        this.logger = logger;
+    }
+
     public async Task StartAsync(CancellationToken token = default)
     {
         logger.LogInformation("Bootstrapping {Worker}", nameof(DataSeedBackgroundWorker));

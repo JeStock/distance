@@ -6,8 +6,15 @@ using static Places.Infra.Elastic.IndexNames;
 
 namespace Places.Infra.Elastic;
 
-public class AirportsRepository(IElasticClientFactory factory) : IAirportsRepository
+public class AirportsRepository : IAirportsRepository
 {
+    private readonly IElasticClientFactory factory;
+
+    public AirportsRepository(IElasticClientFactory factory)
+    {
+        this.factory = factory;
+    }
+
     public async Task<Maybe<Airport>> GetByIataAsync(string iataCode, CancellationToken token = default)
     {
         var searchResponse = await factory.GetClient()

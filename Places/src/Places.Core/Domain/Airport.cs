@@ -31,7 +31,7 @@ public class Airport
 
     private static Result<string> ParseName(string? name) =>
         name == null || string.IsNullOrWhiteSpace(name)
-            ? FailWith<string>("Provided Name is invalid")
+            ? FailWith<string>("Name is invalid")
             : name;
 
     public static Result<Airport> Parse(AirportDto dto)

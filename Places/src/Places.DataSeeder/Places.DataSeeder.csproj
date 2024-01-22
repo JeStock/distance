@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Places.Core\Places.Core.csproj" />
-      <ProjectReference Include="..\Places.Infra\Places.Infra.csproj" />
     </ItemGroup>
 
     <ItemGroup>

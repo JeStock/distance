@@ -13,6 +13,6 @@ public record Icao
 
     public static Result<Icao> Parse(string? code) =>
         code == null || DomainInvariants.IcaoPattern().IsMatch(code) == false
-            ? FailWith<Icao>($"Icao code doesn't match pattern '{CodePattern}'")
+            ? FailWith<Icao>($"'{code}' doesn't match ICAO pattern '{CodePattern}'")
             : new Icao(code);
 }

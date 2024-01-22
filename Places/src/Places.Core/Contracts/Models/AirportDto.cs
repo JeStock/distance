@@ -1,6 +1,6 @@
 ﻿namespace Places.Core.Contracts.Models;
 
-public class AirportDto
+public record AirportDto
 {
     public int Id { get; init; }
     public string? Name { get; init; }

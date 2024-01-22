@@ -45,14 +45,6 @@ public class AirportsIndexFacade(IElasticClientFactory factory, ILogger<Airports
         return ToResult(indexDeleted.IsSuccess());
     }
 
-    public async Task<OperationResult> IndexAirportAsync(AirportDto airport, CancellationToken token = default)
-    {
-        var elastic = factory.GetClient();
-
-        var indexResponse = await elastic.IndexAsync(airport, AirportsIndexName, token);
-        return ToResult(indexResponse.IsSuccess());
-    }
-
     public async Task<OperationResult> BulkIndexAirportsAsync(
         IEnumerable<AirportDto> airports, CancellationToken token = default)
     {

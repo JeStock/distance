@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Distance.Api\Distance.Api.csproj"/>
+        <ProjectReference Include="..\..\src\Places.Api\Places.Api.csproj"/>
     </ItemGroup>
 
 </Project>

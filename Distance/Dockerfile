@@ -10,4 +10,4 @@ RUN dotnet publish -c release -o /app-publish --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app-publish
 COPY --from=builder ./app-publish /app-publish
-CMD ["sh", "-c", "dotnet Distance.${PRJ}.dll"]
+CMD ["sh", "-c", "dotnet Distance.Api.dll"]

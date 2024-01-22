@@ -17,12 +17,12 @@ public readonly record struct Location
 
     private static Result<double> ParseLatitude(double? value) =>
         !value.HasValue || Math.Abs(value.Value) > 90
-            ? FailWith<double>("Provided Latitude is invalid")
+            ? FailWith<double>($"'{value}' is invalid Latitude")
             : value.Value;
 
     private static Result<double> ParseLongitude(double? value) =>
         !value.HasValue || Math.Abs(value.Value) > 180
-            ? FailWith<double>("Provided Longitude is invalid")
+            ? FailWith<double>($"'{value}' is invalid Longitude")
             : value.Value;
 
     public static Result<Location> Parse(LocationDto dto)
@@ -33,7 +33,7 @@ public readonly record struct Location
         var result = Combine(latitude, longitude);
         return result.IsFailure
             ? FailWith<Location>(result.Error)
-            : new Location(longitude.Value, latitude.Value);
+            : new Location(latitude.Value, longitude.Value);
     }
 
     public LocationDto ToDto() =>
