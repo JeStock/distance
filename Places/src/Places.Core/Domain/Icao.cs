@@ -1,0 +1,18 @@
+﻿using CSharpFunctionalExtensions;
+using static Places.Shared.ErrorHandling;
+
+namespace Places.Core.Domain;
+
+public record Icao
+{
+    public const string CodePattern = "^[A-Z]{4}$";
+
+    public string Code { get; private set; }
+
+    private Icao(string code) => Code = code;
+
+    public static Result<Icao> Parse(string? code) =>
+        code == null || DomainInvariants.IcaoPattern().IsMatch(code) == false
+            ? FailWith<Icao>($"'{code}' doesn't match ICAO pattern '{CodePattern}'")
+            : new Icao(code);
+}
