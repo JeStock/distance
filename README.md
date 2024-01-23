@@ -33,7 +33,7 @@ All of them unsafe/incorrect/inaccurate.
 ### Places service
 Service responsible for 2 things
 1. Parse the CSV file with airports' data and index all successfully parsed airports into the Elasticsearch.
-2. Provide an API to get an info regarding different places of Earth. For simplicity, it's currently limiting by airports, but could be extended by any places which have (or associated to) a static geolocation: cities, ports, etc.
+2. Provide an API to get an info regarding different places in Earth. For simplicity, it's currently limiting by airports, but could be extended by any places which have (or associated to) a static geolocation: cities, ports, etc.
 
 ### Distance service
 Distance service accepts 2 airports IATA codes, queries airport info from Places service, and calculates the distance between these airports.
