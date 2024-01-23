@@ -44,13 +44,13 @@ Both services follow the so-called Clean Architecture (also known as Hexagonal/O
 The domain code is isolated into a separate project and have no dependencies on other projects. It contains the problem domain models, domain-specific logic and public contracts to interact with the domain.  
 Each domain model implements [Smart constructor](#type-driven-design) and [Parse, don't validate](#type-driven-design) patterns, which are complementary, both they are contributing to the DDD's approach of encoding the domain's logic into the application's type system,  [making invalid state unrepresentable](#type-driven-design).  
 
-The Core intentionally made having no dependencies on other projects (except 'Shared'), and it's pure: no mutations, no exceptions, no side effects, no DI is used. As a consequence, it's 100% testable without any compromises: no mocks, stubs or fakes needed, tests are simple and straightforward, yet effective.
+The Core intentionally made having no dependencies on other projects (except `Shared`), and it's pure: no mutations, no exceptions, no side effects, no DI is used. As a consequence, it's 100% testable without any compromises: no mocks, stubs or fakes needed, tests are simple and straightforward, yet effective.
 ### Application layer
 Here it's a bit artificial, but in a real-world code it'll be the main gateway to the domain of the service, specifying the use cases of the application.
 ### Api (Presentation) layer
-It's an entry point to the service - its public interface. It's responsible for 'RestApi' endpoints, 'OpenApi' specification, HTTP request/response-handling logic, application configuration, and it's a composition root of the whole service.
+It's an entry point to the service - its public interface. It's responsible for `RestApi` endpoints, `OpenApi` specification, HTTP request/response-handling logic, application configuration, and it's a composition root of the whole service.
 ### Infrastructure layer
-It's responsible for all the external dependencies of a service. E.g. `Distance` service have 2 external dependencies: `Places` service and `Redis` cache, so both `Places RestApi Client` and `Redis Repository` are implemented in scope of infrastructure.
+It's responsible for all the external dependencies of the service. E.g. `Distance` service have 2 external dependencies: `Places` service and `Redis` cache, so both `Places RestApi Client` and `Redis Repository` are implemented in scope of infrastructure.
 ### Shared
 It contains domain-agnostic code that could be useful anywhere. In real-world application, it'll probably be a NuGet package(s).
 
