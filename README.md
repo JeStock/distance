@@ -48,7 +48,7 @@ The Core intentionally made having no dependencies on other projects (except 'Sh
 ### Application layer
 Here it's a bit artificial, but in a real-world code it'll be the main gateway to the domain of the service, specifying the use cases of the application.
 ### Api (Presentation) layer
-It's responsible for 'RestApi' endpoints, 'OpenApi' specification, HTTP request/response-handling logic, application configuration, and it's a composition root of the whole service.
+It's an entry point to the service - its public interface. It's responsible for 'RestApi' endpoints, 'OpenApi' specification, HTTP request/response-handling logic, application configuration, and it's a composition root of the whole service.
 ### Infrastructure layer
 It's responsible for all the external dependencies of a service. E.g. `Distance` service have 2 external dependencies: `Places` service and `Redis` cache, so both `Places RestApi Client` and `Redis Repository` are implemented in scope of infrastructure.
 ### Shared
