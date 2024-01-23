@@ -15,7 +15,7 @@ In C# this issue typically solved by one of the following 3 approaches:
 1. Utilizing exceptions. There are tons and tons written and said why this is not a good solution, just name a few here:
    * Collect all the errors in one go is complicated;
    * Exceptions cannot be used in a type modeling, they cannot be explicitly encoded in a method’s signature;
-   * Exceptions are not type-safe There is no compile-time validation for code correctness;
+   * Exceptions are not type-safe. There is no compile-time validation for code correctness;
    * Exception are _designed_ and _named_ to denote something _exceptional_, corrupted data or incerrect user input - is not something exceptional, it's _expected_. 
 2. Mixing up responsibilities, e.g. `parsing` and `error reporting` are done in one place, e.g. logger is injected into
 domain code to be able to report error immediately where it's discovered. That violates SRP and makes code less testable.
