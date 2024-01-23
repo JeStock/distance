@@ -78,7 +78,7 @@ In addition, a few integration tests are added (using [WebApplicationFactory](#i
 * [Smart constructor pattern](https://wiki.haskell.org/Smart_constructors)
 * [Functional Programming in C#: 5.4.3 The smart constructor pattern](https://www.manning.com/books/functional-programming-in-c-sharp-second-edition) by Enrico Buonanno
 * [Designing with types: Making illegal states unrepresentable](https://fsharpforfunandprofit.com/posts/designing-with-types-making-illegal-states-unrepresentable) by Scott Wlaschin
-* [Functional C#: Primitive obsession](https://enterprisecraftsmanship.com/posts/functional-c-primitive-obsession)
+* [Functional C#: Primitive obsession](https://enterprisecraftsmanship.com/posts/functional-c-primitive-obsession) by Vladimir Khorikov
 
 ### Boolean blindness
 This repository is using `OperationResult` enum, this is one of the options available to avoid so-called 'Boolean Blindness' antipattern,
