@@ -8,7 +8,7 @@
 > Simple things should be simple. Complex things should be possible
 > -- _Alan Kay_
 
-Here is a problem to solve - validate (or better say _parse_) an input data, collect _all_ the occurred errors and return either the list of errors or successfully parsed data: `rowData -> parser -> ParseData XOR Error[]`.  
+Here is a problem to solve - validate (or better say _parse_) an input data, collect _all_ the occurred errors and return either the list of errors or successfully parsed data: `rowData -> parser -> ParsedData XOR Error[]`.  
 It happened so that almost all mainstream OO languages doesn't have a _simple_ and _reliable_ tool for that simple problem.
 
 In C# this issue typically solved by one of the following 3 approaches:
