@@ -9,14 +9,14 @@
 > -- _Alan Kay_
 
 Here is a problem to solve - validate (or better say _parse_) an input data, collect _all_ the occurred errors and return either the list of errors or successfully parsed data: `rowData -> parser -> ParsedData XOR Error[]`.  
-It happened so that almost all mainstream OO languages doesn't have a _simple_ and _reliable_ tool for that simple problem.
+It happened so that almost all mainstream OO languages don’t have a _simple_ and _reliable_ tool for that simple problem.
 
 In C# this issue typically solved by one of the following 3 approaches:
 1. Utilizing exceptions. There are tons and tons written and said why this is not a good solution, just name a few here:
    * Collect all the errors in one go is complicated;
    * Exceptions cannot be used in a type modeling, they cannot be explicitly encoded in a method’s signature;
    * Exceptions are not type-safe. There is no compile-time validation for code correctness;
-   * Exception are _designed_ and _named_ to denote something _exceptional_, corrupted data or incerrect user input - is not something exceptional, it's _expected_. 
+   * Exceptions are _designed_ and _named_ to denote something _exceptional_, corrupted data or incorrect user input - is not something exceptional, it's _expected_. 
 2. Mixing up responsibilities, e.g. `parsing` and `error reporting` are done in one place, e.g. logger is injected into
 domain code to be able to report error immediately where it's discovered. That violates SRP and makes code less testable.
 3. Hand-making `Result` types, usually incorrect, like this:
@@ -27,11 +27,11 @@ domain code to be able to report error immediately where it's discovered. That v
        public bool IsSuccess => Errors.Count == 0;
    }
    ```
-All of them unsafe/incorrect/inaccurate.
+All of them are unsafe/incorrect/inaccurate.
 
 ## Solution structure
 ### Places service
-Service responsible for 2 things
+Service is responsible for 2 things
 1. Parse the CSV file with airports' data and index all successfully parsed airports into the Elasticsearch.
 2. Provide an API to get an info regarding different places on Earth. For simplicity, it's currently limiting by airports, but could be extended by any places which have (or associated to) a static geolocation: cities, ports, etc.
 
@@ -42,9 +42,9 @@ Distance service accepts 2 airports IATA codes, queries airport info from Places
 Both services follow the so-called Clean Architecture (also known as Hexagonal/Onion/Ports and adapters).
 ### Core (Domain) Layer
 The domain code is isolated into a separate project and have no dependencies on other projects. It contains the problem domain models, domain-specific logic and public contracts to interact with the domain.  
-Each domain model implements [Smart constructor](#type-driven-design) and [Parse, don't validate](#type-driven-design) patterns, which are complementary, both they are contributing to the DDD's approach of encoding the domain's logic into the application's type system,  [making invalid state unrepresentable](#type-driven-design).  
+Each domain model implements [Smart constructor](#type-driven-design) and [Parse, don't validate](#type-driven-design) patterns, which are complementary, both of them are contributing to the DDD's approach of encoding the domain's logic into the application's type system,  [making invalid state unrepresentable](#type-driven-design).  
 
-The Core intentionally made having no dependencies on other projects (except `Shared`), and it's pure: no mutations, no exceptions, no side effects, no DI is used. As a consequence, it's 100% testable without any compromises: no mocks, stubs or fakes needed, tests are simple and straightforward, yet effective.
+The Core is intentionally made having no dependencies on other projects (except `Shared`), and it's pure: no mutations, no exceptions, no side effects, no DI is used. As a consequence, it's 100% testable without any compromises: no mocks, stubs or fakes needed, tests are simple and straightforward, yet effective.
 ### Application layer
 Here it's a bit artificial, but in a real-world code it'll be the main gateway to the domain of the service, specifying the use cases of the application.
 ### Api (Presentation) layer
